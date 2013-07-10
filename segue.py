@@ -41,7 +41,8 @@ def get_columns(filename, *args):
 	requested_cols = args
 	for requested_column in requested_cols:
 		if not isinstance(requested_column, column_names):
-			raise IOError("")
+			raise IOError("Requested Column Name is not a column name in the fits file.")
 
+	## Check that the data exists and is not -9999
 	
 
