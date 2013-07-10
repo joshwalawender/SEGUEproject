@@ -11,6 +11,7 @@ import sys
 import os
 import getopt
 from astropy.io import fits
+import numpy as np
 
 
 help_message = '''
@@ -38,8 +39,15 @@ def get_columns(filename, *args):
 	except IOError:
 		raise IOError("Probably not a fits file.  Try again with the correct file.")
 
+	## Extract Data in to Structured Array
+	header = hdu[0].header
+	data = hdu[1].data
+	cols = hdu[1].columns
+	cols.info()
+	
 
 def main(argv=None):
+	filename = None
 	if argv is None:
 		argv = sys.argv
 	try:
@@ -62,6 +70,13 @@ def main(argv=None):
 		print >> sys.stderr, "\t for help use --help"
 		return 2
 
+	## If no -i input set use the first argument as the fits filename
+	if not filename and len(args)>0:
+		filename = args[0]
+	else:
+		sys.exit(1)  ## this should be improved
+	
+	
 	## Main Program Stats Here
 	data = get_columns(filename)
 
