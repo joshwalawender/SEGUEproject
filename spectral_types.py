@@ -37,7 +37,7 @@ def main(argv=None):
 	
 	
 	## Main Program Stats Here
-	data = get_columns(filename)
+	data = segue.get_columns(filename)
 
 
 
