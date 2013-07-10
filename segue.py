@@ -14,16 +14,9 @@ from astropy.io import fits
 import numpy as np
 
 
-help_message = '''
-The help message goes here.
-'''
-
-
-class Usage(Exception):
-	def __init__(self, msg):
-		self.msg = msg
-
 def get_columns(filename, *args):
+	"""Gets column data from a SEGUE file"""
+	
 	## Check File Size
 	try:
 		filesize_bytes = os.stat(filename).st_size
@@ -31,6 +24,7 @@ def get_columns(filename, *args):
 		raise OSError("File probably doesn't exist.  Did you put in the correct path?")
 
 	## Open the fits file
+	## If file is large, use memmap
 	try:
 		if filesize_bytes < 2**30:
 			hdu = fits.open(filename, memmap=False)
