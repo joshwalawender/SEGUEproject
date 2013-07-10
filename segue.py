@@ -35,8 +35,20 @@ def get_columns(filename, *args):
 
 	## Extract Data in to Structured Array
 	header = hdu[0].header
-	data = hdu[1].data
-	cols = hdu[1].columns
-	cols.info()
+	data   = hdu[1].data
+	cols   = hdu[1].columns
+#	cols.info()
+
+
+	### CREATES DICTIONARY THAT CONTAINS THE NAMES OF THE COLUMNS ON THE FITS FILE
+	NAMES_DICTIONARY = {}
+	##     EXTRACTING COLUMNS' NAMES
+	COLUMNS_NAMES     = filename[1].columns.names
+
+	for ii in range(0, len( COLUMNS_NAMES ) ):
+		''' The key is the name of the column, while the value is the index of that column in the 'COLUMNS_NAMES' array '''
+		NAMES_DICTIONARY[COLUMNS_NAMES[ii] ] = ii
+
+
 	
 
