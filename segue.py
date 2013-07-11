@@ -14,6 +14,7 @@ import astropy
 from astropy import table
 from astropy.io import fits
 import numpy as np
+import astropy.units as u
 
 
 def get_columns(filename, *args):
@@ -59,19 +60,17 @@ def get_columns(filename, *args):
 
 
 def convert_to_cartesian(gal_long, gal_lat, hel_dist):
-
-	import astropy.units as u
-
-	if gal_lat < 0:
-		gal_lat = 360 + gal_lat
-
-	if gal_long <0:
-		gal_long = 360+gal_long
-
 	if (hasattr(gal_long, 'unit') & hasattr(gal_lat, 'unit') & hasattr(hel_dist, 'unit') ):
-		print 'Calculating conversion for:\n\t b {0}\n\t l {1}\n\tDist {2}'.format(gal_long, gal_lat, hel_dist)
+		pass
+		# print 'Calculating conversion for:\n\t b {0}\n\t l {1}\n\tDist {2}'.format(gal_long.value, gal_lat.value, hel_dist.value)
 	else:
 		raise ValueError("At least one input does not have a unit.")
+
+	if gal_lat.value < 0:
+		gal_lat.value = 360 + gal_lat.value
+
+	if gal_long.value <0:
+		gal_long.value = 360 + gal_long.value
 
 		#convert D to kpc
 
@@ -83,9 +82,9 @@ def convert_to_cartesian(gal_long, gal_lat, hel_dist):
 		#z = Dcos(b)
 
 
-	x = hel_dist * np.sin(gal_long)*np.cos(gal_lat) - 8.*u.kpc
-	y = hel_dist * np.sin(gal_long)*np.sin(gal_lat)
-	z = hel_dist * np.cos(gal_long)
+	x = hel_dist * np.sin(np.radians(gal_long.value))*np.cos(np.radians(gal_lat.value)) - 8.*u.kpc
+	y = hel_dist * np.sin(np.radians(gal_long.value))*np.sin(np.radians(gal_lat.value))
+	z = hel_dist * np.cos(np.radians(gal_long.value))
 
 	return [x,y,z]
 
