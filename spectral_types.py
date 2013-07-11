@@ -37,9 +37,10 @@ def main(argv=None):
 	
 	
 	## Main Program Stats Here
-	data = segue.get_columns(filename)
-
-
-
+	data = segue.get_columns(filename, "SPECTYPE_HAMMER", "SPECTYPE_SUBCLASS")
+	
+	for spectral_type in set(data["SPECTYPE_HAMMER"]):
+		print spectral_type
+		
 if __name__ == "__main__":
 	sys.exit(main())

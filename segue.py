@@ -10,6 +10,8 @@ Copyright (c) 2013 . All rights reserved.
 import sys
 import os
 import getopt
+import astropy
+from astropy import table
 from astropy.io import fits
 import numpy as np
 
@@ -37,12 +39,19 @@ def get_columns(filename, *args):
 	header = hdu[0].header
 
 	### Check if Requested Column Name is actually there
-	column_names     = hdu[1].columns.names
+	column_names = hdu[1].columns.names
 	requested_cols = args
+	data = astropy.table.Table()
 	for requested_column in requested_cols:
-		if not isinstance(requested_column, column_names):
-			raise IOError("Requested Column Name is not a column name in the fits file.")
-
-	## Check that the data exists and is not -9999
+		try:
+			data.add_column(astropy.table.Column(data=hdu[1].data[requested_column], name=requested_column))
+		except:
+			raise
+		## "Clean" data for -999 values, etc.
+		if requested_column == "FEH_ADOP" or requested_column == "RV_ADOP" or requested_column == "DIST_ADOP":
+			where_clean = np.where((data[requested_column] == -9999))
+			table[where_clean].mask=[True]
+		
 	
-
+	
+	return data
