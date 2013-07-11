@@ -40,26 +40,21 @@ def main(argv=None):
 	
 	## Main Program Starts Here
 	data = segue.get_columns(filename, "FEH_ADOP", "RV_ADOP", "DIST_ADOP")
-	print data["FEH_ADOP"]
 	
 	
 	#code for histograms	
 	fig, axes = plt.subplots(3,1, sharey = True)
 
-	isnan_rv = np.isnan(data["RV_ADOP"])
-	isnan_feh = np.isnan(data["FEH_ADOP"])
-	isnan_d = np.isnan(data["DIST"])
-	bad_array = (isnan_rv | isnan_feh | isnan_d)
 	
 
-	axes[0].hist(data["RV_ADOP"])
+	axes[0].hist(data["RV_ADOP"][np.isfinite(data["RV_ADOP"])])
 	axes[0].set_xlabel('Radial Velocity')
 
 
-	axes[1].hist(data["FEH_ADOP"])
+	axes[1].hist(data["FEH_ADOP"][np.isfinite(data["FEH_ADOP"])])
 	axes[1].set_xlabel('[Fe/H]')
 	
-	axes[2].hist(data["DIST_ADOP"])
+	axes[2].hist(data["DIST_ADOP"][np.isfinite(data["DIST_ADOP"])])
 	axes[2].set_xlabel('Heliocentric Distance') 
 	
 	
