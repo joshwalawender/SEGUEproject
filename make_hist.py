@@ -4,6 +4,7 @@ import getopt
 from astropy.io import fits
 import numpy as np
 import segue
+import matplotlib.pyplot as plt
 
 def main(argv=None):
 	filename = None
@@ -33,19 +34,35 @@ def main(argv=None):
 	if not filename and len(args)>0:
 		filename = args[0]
 	else:
+		print "Bad things happened"
 		sys.exit(1)  ## this should be improved
 	
 	
 	## Main Program Starts Here
-	data = segue.get_columns(filename)
+	data = segue.get_columns(filename, "FEH_ADOP", "RV_ADOP", "DIST_ADOP")
+	print data["FEH_ADOP"]
 	
 	
-	#code for histograms
-	
+	#code for histograms	
 	fig, axes = plt.subplots(3,1, sharey = True)
-	axes[0].hist(data1)
-	axes[0].xlabel('Radial Velocity')
-	axes[1].hist(data2)
-	axes[1].xlabel('[Fe/H]')
-	axes[2].hist(data3)
-	axes[2].xlabel('Heliocentric Distance') 
+
+	isnan_rv = np.isnan(data["RV_ADOP"])
+	isnan_feh = np.isnan(data["FEH_ADOP"])
+	isnan_d = np.isnan(data["DIST"])
+	bad_array = (isnan_rv | isnan_feh | isnan_d)
+	
+
+	axes[0].hist(data["RV_ADOP"])
+	axes[0].set_xlabel('Radial Velocity')
+
+
+	axes[1].hist(data["FEH_ADOP"])
+	axes[1].set_xlabel('[Fe/H]')
+	
+	axes[2].hist(data["DIST_ADOP"])
+	axes[2].set_xlabel('Heliocentric Distance') 
+	
+	
+if __name__ == "__main__":
+	sys.exit(main())
+	

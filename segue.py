@@ -49,8 +49,8 @@ def get_columns(filename, *args):
 			raise
 		## "Clean" data for -999 values, etc.
 		if requested_column == "FEH_ADOP" or requested_column == "RV_ADOP" or requested_column == "DIST_ADOP":
-			where_clean = np.where((data[requested_column] == -9999))
-			table[where_clean].mask=[True]
+			where_bad = np.where((data[requested_column] == -9999.0))
+			data[requested_column][where_bad] = np.nan
 		
 	
 	
