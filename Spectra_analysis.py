@@ -41,17 +41,25 @@ Spectra_array = np.array( Spectra_array )
 
 ### INTERPOLATION
 cubic_func_array = [[] for x in xrange( Spectra_array.size ) ]
+
 ### Computes interpolation for the first wavelength
 cubic_func_array_0 = interp1d(Spectra_array[0]['wavelengths'], Spectra_array[0]['flux'], kind='linear', bounds_error=False)
 
 ### Plotting first spectrum
 plot( Spectra_array[0]['wavelengths'], Spectra_array[0]['flux'], 'r--', label='Interpolation_Linear_{0}'.format(0), markersize = 15)
 
+sum_spectra_flux = Spectra_array[0]['flux']
+
+
 ## Calculating interpolation values for each spectrum.
+cmap = cm.Accent
 for i in range(1, len( Spectra_array) ):
 	cubic_func_array[i] = cubic_func_array_0( Spectra_array[i]['wavelengths'] )
-	### Still needed to change colors using 'matplotlib.cm'
-	plot( Spectra_array[i]['wavelengths'], cubic_func_array[i], 'r--', label='Interpolation_Linear_{i}'.format(i), markersize = 15) 
+	sum_spectra_flux += cubic_func_array[i]
+	### Still needed to change colors
+	plot( Spectra_array[i]['wavelengths'], cubic_func_array[i], color=cmap(i ), label='Interpolation_Linear_{0}'.format(i), markersize = 15)
+
+
 
 ### Graph extras
 xlabel('Wavelength',fontsize=14)
