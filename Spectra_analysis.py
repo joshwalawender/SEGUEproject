@@ -41,3 +41,14 @@ for i in range(0, 10):
 
 ### Turning list into an array
 Spectra_array = np.array( Spectra_array )
+
+### Wavelengths are located in: ''Spectra_array[i]['wavelengths']
+### Fluxes are located in     : ''Spectra_array[i]['flux']
+### Spectro class located in  : ''Spectra_array[i]['spectro_class']
+
+### Plotting the spectra ###
+#plot( Spectra_array[0]['wavelengths'], Spectra_array[0]['flux'], marker=None, drawstyle='steps')
+#title(Spectra_array[0]['spectro_class'], fontsize=15)
+#xlabel('Wavelength',fontsize=14)
+#ylabel('Flux', fontsize=14)
+#xlim(4000, 5000)
