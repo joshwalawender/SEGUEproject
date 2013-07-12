@@ -39,6 +39,20 @@ for i in range(0, 10):
 ### Turning list into an array
 Spectra_array = np.array( Spectra_array )
 
+### INTERPOLATION
+cubic_func_array = [[] for x in xrange( Spectra_array.size ) ]
+### Computes interpolation for the first wavelength
+cubic_func_array_0 = interp1d(Spectra_array[0]['wavelengths'], Spectra_array[0]['flux'], kind='linear', bounds_error=False)
+
+## Calculating interpolation values for each spectrum.
+for i in range(1, len( Spectra_array) ):
+	cubic_func_array[i] = cubic_func_array_0( Spectra_array[i]['wavelengths'] )
+	### Still needed to change colors using 'matplotlib.cm'
+	plot( Spectra_array[i]['wavelengths'], cubic_func_array[i], 'r--', label='Interpolation_Linear_{i}'.format(i), markersize = 15 
+xlabel('Wavelength',fontsize=14)
+ylabel('Flux', fontsize=14)
+xlim(4000, 5000)
+
 ### Wavelengths are located in: ''Spectra_array[i]['wavelengths']
 ### Fluxes are located in     : ''Spectra_array[i]['flux']
 ### Spectro class located in  : ''Spectra_array[i]['spectro_class']
