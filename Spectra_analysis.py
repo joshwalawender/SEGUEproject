@@ -17,9 +17,6 @@ class Spectrum(object):
 	
 	def Spectrum_def(self, spectrum_array):
 		mjd, plate, fiber = spectrum_array
-		#self.plate = plate
-		#self.mjd   = mjd
-		#self.fiber = fiber
 		self.url   = "http://api.sdss3.org/spectrum?plate={0}&mjd={1}&fiber={2}&format=json".format(plate, mjd, fiber)
 		
 		response   = urllib2.urlopen(self.url)
