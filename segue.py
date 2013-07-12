@@ -66,26 +66,28 @@ def convert_to_cartesian(gal_long, gal_lat, hel_dist):
 	else:
 		raise ValueError("At least one input does not have a unit.")
 
+	# convert angles to degrees
+	gal_long = gal_long.to(u.deg)
+	gal_lat = gal_lat.to(u.deg)
 
-		#get angles which are -180 to 180 into 0 to 360
-		gal_lat = map(flip_angles, gal_lat)
-		gal_long = map(flip_angles, gal_long)
+	#get angles which are -180 to 180 into 0 to 360
+	gal_lat = map(flip_angles, [val.value for val in gal_lat])*u.deg
+	gal_long = map(flip_angles, [val.value for val in gal_long])*u.deg
 
-		#convert D to kpc
-
+	#convert D to kpc
 	hel_dist = hel_dist.to(u.kpc)
 
-		#formulae for conversion
-		#x = Dsin(b)cos(l)-8kpc
-		#y = Dsin(b)sin(l)
-		#z = Dcos(b)
+	#formulae for conversion
+	#x = Dsin(b)cos(l)-8kpc
+	#y = Dsin(b)sin(l)
+	#z = Dcos(b)
 
 
 	x = hel_dist * np.sin(np.radians(gal_long.value))*np.cos(np.radians(gal_lat.value)) - 8.*u.kpc
 	y = hel_dist * np.sin(np.radians(gal_long.value))*np.sin(np.radians(gal_lat.value))
 	z = hel_dist * np.cos(np.radians(gal_long.value))
 
-	return [x,y,z]
+	return x.value,y.value,z.value
 	
 def flip_angles(ang):
 	if ang < 0:
